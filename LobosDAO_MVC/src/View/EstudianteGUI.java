@@ -1,9 +1,12 @@
 package View;
 
+import Controller.*;
+import Model.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
 
 public class EstudianteGUI extends JFrame implements ActionListener{
 	JLabel lblTitulo;
@@ -46,6 +50,9 @@ public class EstudianteGUI extends JFrame implements ActionListener{
 	JScrollPane scrllPnlDatos;
 	Font etiquetas = new Font("Arial", Font.BOLD, 25);
 	int aligDerecha = SwingConstants.RIGHT;
+	EstudianteController estCont = new EstudianteController();
+	
+	
 	public EstudianteGUI(){
 		setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -153,23 +160,193 @@ public class EstudianteGUI extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e){
+		
 		if(e.getSource()==btnCreate){
+			if(creacion()){
+				JOptionPane.showMessageDialog(null,"Estudiante Creado Exitosamente!");
+				listado();
+			}
+	
 			
-		}else if(e.getSource()==btnRead){
+		}else if(e.getSource()==btnRead) {
+			if(lectura()){
+				JOptionPane.showMessageDialog(null,"Estudiante Leido Exitosamente!");
+			}
 			
 		}else if(e.getSource()==btnUpdate){
+			if(actualizacion()){
+				JOptionPane.showMessageDialog(null,"Estudiante Actualizado Exitosamente!");
+			}
+			
 			
 		}else if(e.getSource()==btnDelete){
+			if(borrado()){
+				JOptionPane.showMessageDialog(null,"Estudiante Borrado Exitosamente!");
+			}
 			
 		}else if(e.getSource()==btnExist){
+			if(existencia()){
+				JOptionPane.showMessageDialog(null,"El Estudiante Si Existe!");
+			}else {
+				JOptionPane.showMessageDialog(null,"El Estudiante No Existe!");
+			}
+			
 			
 		}else if(e.getSource()==btnList){
+			listado();
 			
 		}else if(e.getSource()==btnProfesores){
+			ProfesoresGUI pg = new ProfesoresGUI();
+			setVisible(false);
+			pg.setVisible(true);
+			dispose();
 			
 		}else if(e.getSource()==btnCarreras){
-			
+			CarreraGUI cg = new CarreraGUI();
+			setVisible(false);
+			cg.setVisible(true);
+			dispose();
 		}
 	}
+	
+	public boolean creacion(){
+		// Verificar datos de entrada
+		int codigo;
+		try {
+			codigo = Integer.parseInt(txtCodigo.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"El codigo debe ser un valor entero");
+			return false;
+		}
+		String nombre = txtNombre.getText();
+		String correo = txtCorreo.getText();
+		String telefono = txtTelefono.getText();
+		String direccion = txtDireccion.getText();
+		long cedula;
+		try {
+			cedula = Long.parseLong(txtCedula.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"La cedula debe ser un valor entero");
+			return false;
+		}
+		
+		// Creacion
+		return estCont.crear(codigo, nombre, correo, telefono, direccion, cedula);
+	}
+	
+	public boolean lectura(){
+		int codigo;
+		try {
+			codigo = Integer.parseInt(txtCodigo.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"El codigo debe ser un valor entero");
+			return false;
+		}
+		DTOEstudiante est;
 
+		
+		try {
+			est = estCont.leer(codigo);
+		}catch(Exception ex){
+			return false;
+		}
+		
+		txtNombre.setText(est.getNombre());
+		txtTelefono.setText(est.getTelefono());
+		txtCorreo.setText(est.getCorreo());
+		txtDireccion.setText(est.getDireccion());
+		txtCedula.setText(est.getCedula()+"");
+		repaint();
+		return true;
+		
+		
+		
+	}
+	
+	public boolean actualizacion(){
+		// Verificar datos de entrada
+		int codigo;
+		try {
+			codigo = Integer.parseInt(txtCodigo.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"El codigo debe ser un valor entero");
+			return false;
+		}
+		String nombre = txtNombre.getText();
+		String correo = txtCorreo.getText();
+		String telefono = txtTelefono.getText();
+		String direccion = txtDireccion.getText();
+		long cedula;
+		try {
+			cedula = Long.parseLong(txtCedula.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"La cedula debe ser un valor entero");
+			return false;
+		}
+		
+		// Actualizacion
+		return estCont.actualizar(codigo, nombre, correo, telefono, direccion, cedula);
+	}
+		
+	public boolean borrado(){
+		// Verificar datos de entrada
+		int codigo;
+		try {
+			codigo = Integer.parseInt(txtCodigo.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"El codigo debe ser un valor entero");
+			return false;
+		}
+		String nombre = txtNombre.getText();
+		String correo = txtCorreo.getText();
+		String telefono = txtTelefono.getText();
+		String direccion = txtDireccion.getText();
+		long cedula;
+		try {
+			cedula = Long.parseLong(txtCedula.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"La cedula debe ser un valor entero");
+			return false;
+		}
+		
+		// Borrado
+		return estCont.borrar(codigo, nombre, correo, telefono, direccion, cedula);
+		
+	}
+	
+	public boolean existencia(){
+		// Verificar datos de entrada
+		int codigo;
+		try {
+			codigo = Integer.parseInt(txtCodigo.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"El codigo debe ser un valor entero");
+			return false;
+		}
+		String nombre = txtNombre.getText();
+		String correo = txtCorreo.getText();
+		String telefono = txtTelefono.getText();
+		String direccion = txtDireccion.getText();
+		long cedula;
+		try {
+			cedula = Long.parseLong(txtCedula.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"La cedula debe ser un valor entero");
+			return false;
+		}
+		
+		// Existencia
+		return estCont.existe(codigo, nombre, correo, telefono, direccion, cedula);
+	
+	}
+	
+	public void listado(){
+		ArrayList<Object[]>  listE = estCont.listar();
+		for(int i=0; i<listE.size(); i++) {
+			dataModel.addRow(listE.get(i));
+		}
+		repaint();
+	}
+	
+	
 }

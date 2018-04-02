@@ -1,12 +1,17 @@
 package View;
 
+import Controller.*;
+import Model.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -38,6 +43,8 @@ public class CarreraGUI extends JFrame implements ActionListener{
 	JScrollPane scrllPnlDatos;
 	Font etiquetas = new Font("Arial", Font.BOLD, 25);
 	int aligDerecha = SwingConstants.RIGHT;
+	CarreraController carCont = new CarreraController();
+	
 	public CarreraGUI(){
 		setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -119,25 +126,177 @@ public class CarreraGUI extends JFrame implements ActionListener{
 		show();
 	}
 
+	
 	@Override
 	public void actionPerformed(ActionEvent e){
+		
 		if(e.getSource()==btnCreate){
+			if(creacion()){
+				JOptionPane.showMessageDialog(null,"Carrera Creada Exitosamente!");
+			}
+	
 			
-		}else if(e.getSource()==btnRead){
+		}else if(e.getSource()==btnRead) {
+			if(lectura()){
+				JOptionPane.showMessageDialog(null,"Carrera Leido Exitosamente!");
+			}
 			
 		}else if(e.getSource()==btnUpdate){
+			if(actualizacion()){
+				JOptionPane.showMessageDialog(null,"Carrera Actualizado Exitosamente!");
+			}
+			
 			
 		}else if(e.getSource()==btnDelete){
+			if(borrado()){
+				JOptionPane.showMessageDialog(null,"Carrera Borrado Exitosamente!");
+			}
 			
 		}else if(e.getSource()==btnExist){
+			if(existencia()){
+				JOptionPane.showMessageDialog(null,"La Carrera Si Existe!");
+			}else {
+				JOptionPane.showMessageDialog(null,"La Carrera No Existe!");
+			}
+			
 			
 		}else if(e.getSource()==btnList){
+			ArrayList<Object[]>  listE = carCont.listar();
+			for(int i=0; i<listE.size(); i++) {
+				dataModel.addRow(listE.get(i));
+			}
+			repaint();
 			
 		}else if(e.getSource()==btnProfesores){
+			ProfesoresGUI pg = new ProfesoresGUI();
+			setVisible(false);
+			pg.setVisible(true);
+			dispose();
 			
 		}else if(e.getSource()==btnEstudiantes){
+			EstudianteGUI cg = new EstudianteGUI();
+			setVisible(false);
+			cg.setVisible(true);
+			dispose();
 			
 		}
 	}
+	
+	public boolean creacion(){
+		// Verificar datos de entrada
+		int codigo;
+		try {
+			codigo = Integer.parseInt(txtCodigo.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"El codigo debe ser un valor entero");
+			return false;
+		}
+		String nombre = txtNombre.getText();
+		int jefe;
+		try {
+			jefe = Integer.parseInt(txtJefe.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"El codigo del jefe debe ser un valor entero");
+			return false;
+		}
+		
+		// Creacion
+		return carCont.crear(codigo, nombre, jefe);
+	}
+	
+	public boolean lectura(){
+		int codigo;
+		try {
+			codigo = Integer.parseInt(txtCodigo.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"El codigo debe ser un valor entero");
+			return false;
+		}
+		DTOCarrera car;
+
+		
+		try {
+			car = carCont.leer(codigo);
+		}catch(Exception ex){
+			return false;
+		}
+		
+		txtNombre.setText(car.getNombre());
+		txtJefe.setText(car.getJefeCarreraCodigo()+"");
+		repaint();
+		return true;
+		
+		
+		
+	}
+	
+	public boolean actualizacion(){
+		// Verificar datos de entrada
+		int codigo;
+		try {
+			codigo = Integer.parseInt(txtCodigo.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"El codigo debe ser un valor entero");
+			return false;
+		}
+		String nombre = txtNombre.getText();
+		int jefe;
+		try {
+			jefe = Integer.parseInt(txtJefe.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"El codigo del jefe debe ser un valor entero");
+			return false;
+		}
+		
+		// Actualizar
+		return carCont.actualizar(codigo, nombre, jefe);
+	}
+		
+	public boolean borrado(){
+		// Verificar datos de entrada
+		int codigo;
+		try {
+			codigo = Integer.parseInt(txtCodigo.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"El codigo debe ser un valor entero");
+			return false;
+		}
+		String nombre = txtNombre.getText();
+		int jefe;
+		try {
+			jefe = Integer.parseInt(txtJefe.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"El codigo del jefe debe ser un valor entero");
+			return false;
+		}
+		
+		// Borrado
+		return carCont.borrar(codigo, nombre, jefe);
+		
+	}
+	
+	public boolean existencia(){
+		// Verificar datos de entrada
+		int codigo;
+		try {
+			codigo = Integer.parseInt(txtCodigo.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"El codigo debe ser un valor entero");
+			return false;
+		}
+		String nombre = txtNombre.getText();
+		int jefe;
+		try {
+			jefe = Integer.parseInt(txtJefe.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"El codigo del jefe debe ser un valor entero");
+			return false;
+		}
+		
+		// Creacion
+		return carCont.existe(codigo, nombre, jefe);
+	
+	}
+	
 
 }

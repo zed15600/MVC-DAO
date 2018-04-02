@@ -1,9 +1,13 @@
 package View;
 
+import Controller.*;
+import Model.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
 
 public class ProfesoresGUI extends JFrame implements ActionListener{
 	JLabel lblTitulo;
@@ -43,6 +48,8 @@ public class ProfesoresGUI extends JFrame implements ActionListener{
 	JScrollPane scrllPnlDatos;
 	Font etiquetas = new Font("Arial", Font.BOLD, 25);
 	int aligDerecha = SwingConstants.RIGHT;
+	ProfesorController proCont = new ProfesorController();
+	
 	public ProfesoresGUI(){
 		setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -140,25 +147,191 @@ public class ProfesoresGUI extends JFrame implements ActionListener{
 		show();
 	}
 
+	
 	@Override
 	public void actionPerformed(ActionEvent e){
+		
 		if(e.getSource()==btnCreate){
+			if(creacion()){
+				JOptionPane.showMessageDialog(null,"Profesor Creado Exitosamente!");
+				listado();
+			}
+	
 			
-		}else if(e.getSource()==btnRead){
+		}else if(e.getSource()==btnRead) {
+			if(lectura()){
+				JOptionPane.showMessageDialog(null,"Profesor Leido Exitosamente!");
+			}
 			
 		}else if(e.getSource()==btnUpdate){
+			if(actualizacion()){
+				JOptionPane.showMessageDialog(null,"Profesor Actualizado Exitosamente!");
+			}
+			
 			
 		}else if(e.getSource()==btnDelete){
+			if(borrado()){
+				JOptionPane.showMessageDialog(null,"Profesor Borrado Exitosamente!");
+			}
 			
 		}else if(e.getSource()==btnExist){
+			if(existencia()){
+				JOptionPane.showMessageDialog(null,"El Profesor Si Existe!");
+			}else {
+				JOptionPane.showMessageDialog(null,"El Profesor No Existe!");
+			}
+			
 			
 		}else if(e.getSource()==btnList){
+			listado();
 			
 		}else if(e.getSource()==btnEstudiantes){
+			EstudianteGUI cg = new EstudianteGUI();
+			setVisible(false);
+			cg.setVisible(true);
+			dispose();
 			
 		}else if(e.getSource()==btnCarreras){
+			CarreraGUI cg = new CarreraGUI();
+			setVisible(false);
+			cg.setVisible(true);
+			dispose();
 			
 		}
+	}
+	
+	public boolean creacion(){
+		// Verificar datos de entrada
+		int codigo;
+		try {
+			codigo = Integer.parseInt(txtCodigo.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"El codigo debe ser un valor entero");
+			return false;
+		}
+		String nombre = txtNombre.getText();
+		String telefono = txtTelefono.getText();
+		String direccion = txtDireccion.getText();
+		long cedula;
+		try {
+			cedula = Long.parseLong(txtCedula.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"La cedula debe ser un valor entero");
+			return false;
+		}
+		
+		// Creacion
+		return proCont.crear(codigo, nombre, telefono, direccion, cedula);
+	}
+	
+	public boolean lectura(){
+		int codigo;
+		try {
+			codigo = Integer.parseInt(txtCodigo.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"El codigo debe ser un valor entero");
+			return false;
+		}
+		DTOProfesor pro;
+
+		
+		try {
+			pro = proCont.leer(codigo);
+		}catch(Exception ex){
+			return false;
+		}
+		
+		txtNombre.setText(pro.getNombre());
+		txtTelefono.setText(pro.getTelefono());
+		txtDireccion.setText(pro.getDireccion());
+		txtCedula.setText(pro.getCedula()+"");
+		repaint();
+		return true;
+		
+		
+		
+	}
+	
+	public boolean actualizacion(){
+		// Verificar datos de entrada
+		int codigo;
+		try {
+			codigo = Integer.parseInt(txtCodigo.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"El codigo debe ser un valor entero");
+			return false;
+		}
+		String nombre = txtNombre.getText();
+		String telefono = txtTelefono.getText();
+		String direccion = txtDireccion.getText();
+		long cedula;
+		try {
+			cedula = Long.parseLong(txtCedula.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"La cedula debe ser un valor entero");
+			return false;
+		}
+		
+		// Actualizacion
+		return proCont.actualizar(codigo, nombre, telefono, direccion, cedula);
+	}
+		
+	public boolean borrado(){
+		// Verificar datos de entrada
+		int codigo;
+		try {
+			codigo = Integer.parseInt(txtCodigo.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"El codigo debe ser un valor entero");
+			return false;
+		}
+		String nombre = txtNombre.getText();
+		String telefono = txtTelefono.getText();
+		String direccion = txtDireccion.getText();
+		long cedula;
+		try {
+			cedula = Long.parseLong(txtCedula.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"La cedula debe ser un valor entero");
+			return false;
+		}
+		
+		// Borrado
+		return proCont.borrar(codigo, nombre, telefono, direccion, cedula);
+		
+	}
+	
+	public boolean existencia(){
+		// Verificar datos de entrada
+		int codigo;
+		try {
+			codigo = Integer.parseInt(txtCodigo.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"El codigo debe ser un valor entero");
+			return false;
+		}
+		String nombre = txtNombre.getText();
+		String telefono = txtTelefono.getText();
+		String direccion = txtDireccion.getText();
+		long cedula;
+		try {
+			cedula = Long.parseLong(txtCedula.getText());
+		}catch(Exception etn){
+			JOptionPane.showMessageDialog(null,"La cedula debe ser un valor entero");
+			return false;
+		}
+		
+		// Existencia
+		return proCont.existe(codigo, nombre, telefono, direccion, cedula);
+	
+	}
+	
+	public void listado(){
+		ArrayList<Object[]>  listE = proCont.listar();
+		for(int i=0; i<listE.size(); i++) {
+			dataModel.addRow(listE.get(i));
+		}
+		repaint();
 	}
 
 }
