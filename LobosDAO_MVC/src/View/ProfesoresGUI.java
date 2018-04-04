@@ -63,7 +63,7 @@ public class ProfesoresGUI extends JFrame implements ActionListener{
 		lblTitulo.setFont(new Font("Arial", Font.BOLD, 40));
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblTitulo);
-		lblCodigo = new JLabel("Código de Profesor");
+		lblCodigo = new JLabel("Codigo de Profesor");
 		lblCodigo.setBounds(1, 62, 396, 25);
 		lblCodigo.setFont(etiquetas);
 		lblCodigo.setHorizontalAlignment(aligDerecha);
@@ -79,7 +79,7 @@ public class ProfesoresGUI extends JFrame implements ActionListener{
 		txtNombre = new JTextField();
 		txtNombre.setBounds(398, 88, 200, 25);
 		add(txtNombre);
-		lblTelefono = new JLabel("Teléfono de Contacto");
+		lblTelefono = new JLabel("Telefono de Contacto");
 		lblTelefono.setBounds(1, 114, 396, 25);
 		lblTelefono.setFont(etiquetas);
 		lblTelefono.setHorizontalAlignment(aligDerecha);
@@ -87,7 +87,7 @@ public class ProfesoresGUI extends JFrame implements ActionListener{
 		txtTelefono = new JTextField();
 		txtTelefono.setBounds(398, 114, 200, 25);
 		add(txtTelefono);
-		lblDireccion = new JLabel("Dirección de Residencia");
+		lblDireccion = new JLabel("Direccion de Residencia");
 		lblDireccion.setBounds(1, 140, 396, 25);
 		lblDireccion.setFont(etiquetas);
 		lblDireccion.setHorizontalAlignment(aligDerecha);
@@ -95,7 +95,7 @@ public class ProfesoresGUI extends JFrame implements ActionListener{
 		txtDireccion = new JTextField();
 		txtDireccion.setBounds(398, 140, 200, 25);
 		add(txtDireccion);
-		lblCedula = new JLabel("Cédula de Ciudadanía");
+		lblCedula = new JLabel("Cedula de Ciudadania");
 		lblCedula.setBounds(1, 166, 396, 25);
 		lblCedula.setFont(etiquetas);
 		lblCedula.setHorizontalAlignment(aligDerecha);
@@ -129,7 +129,7 @@ public class ProfesoresGUI extends JFrame implements ActionListener{
 		add(btnList);
 		dataModel = new DefaultTableModel();
 		tblDatos = new JTable(dataModel);
-		cols = new Object[]{"Código", "Nombre", "Teléfono", "Dirección", "Cédula"};
+		cols = new Object[]{"Codigo", "Nombre", "Telefono", "Direccion", "Cedula"};
 		dataModel.setColumnIdentifiers(cols);
 		scrllPnlDatos = new JScrollPane(tblDatos);
 		scrllPnlDatos.setOpaque(true);

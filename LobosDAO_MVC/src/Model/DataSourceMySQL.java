@@ -9,11 +9,12 @@ import java.util.logging.Logger;
 public final class DataSourceMySQL {
 	// Atributos
 	private static final String DB="Universidad";                       // Nombre de la DataBase
-	private static final String URL ="jdbc:mysql://localhost:3306/"+DB; // URL de la conexion
-	private static final String USERNAME ="root";                       // Nombre del usuario 
-	private static final String PASSWORD ="1234";                       // Contraseña de la DataBase
+	private static final String URL ="jdbc:mysql://dbc:3306/"+DB; // URL de la conexion
+	private static final String USERNAME ="user";                       // Nombre del usuario 
+	private static final String PASSWORD ="12345";                       // Contrasena de la DataBase
 	private static Connection con = null;
 	
+
 	// Constructor
 	private DataSourceMySQL(){}
 	

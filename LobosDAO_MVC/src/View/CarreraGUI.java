@@ -58,7 +58,7 @@ public class CarreraGUI extends JFrame implements ActionListener{
 		lblTitulo.setFont(new Font("Arial", Font.BOLD, 40));
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblTitulo);
-		lblCodigo = new JLabel("Código de Carrera");
+		lblCodigo = new JLabel("Codigo de Carrera");
 		lblCodigo.setBounds(1, 62, 396, 25);
 		lblCodigo.setFont(etiquetas);
 		lblCodigo.setHorizontalAlignment(aligDerecha);
@@ -108,7 +108,7 @@ public class CarreraGUI extends JFrame implements ActionListener{
 		add(btnList);
 		dataModel = new DefaultTableModel();
 		tblDatos = new JTable(dataModel);
-		cols = new Object[]{"Código", "Nombre", "Jefe"};
+		cols = new Object[]{"Codigo", "Nombre", "Jefe"};
 		dataModel.setColumnIdentifiers(cols);
 		scrllPnlDatos = new JScrollPane(tblDatos);
 		scrllPnlDatos.setOpaque(true);
